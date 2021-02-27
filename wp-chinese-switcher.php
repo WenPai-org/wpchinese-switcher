@@ -43,7 +43,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 //define('wpcs_DEBUG', true); $wpcs_deubg_data = array(); //uncomment this line to enable debug
-define('wpcs_ROOT_URL', WP_PLUGIN_URL . '/' . str_replace(basename( __FILE__), "", plugin_basename(__FILE__)));
+define('wpcs_DIR_URL', WP_PLUGIN_URL . '/' . str_replace(basename( __FILE__), "", plugin_basename(__FILE__)));
 define('wpcs_VERSION', '1.0');
 
 $wpcs_options = get_option('wpcs_options');
@@ -253,9 +253,9 @@ var wpcs_target_lang=\"$wpcs_target_lang\";var wpcs_noconversion_url=\"$wpcs_noc
 //]]>
 </script>';
 	if( !$wpcs_direct_conversion_flag )
-		wp_enqueue_script('wpcs-search-js', wpcs_ROOT_URL . 'search-variant.min.js', array(), '1.1', false);
-		//echo '<script type="text/javascript" src="' . wpcs_ROOT_URL . 'search-variant.min.js' . '"></script>';
-
+		wp_enqueue_script('wpcs-search-js', wpcs_DIR_URL . 'assets/js/search-variant.min.js', array(), '1.1', false);
+		//echo '<script type="text/javascript" src="' . wpcs_DIR_URL . 'assets/js/search-variant.min.js' . '"></script>';
+		
 	if( $wpcs_direct_conversion_flag ||
 		( ( class_exists('All_in_One_SEO_Pack') || class_exists('Platinum_SEO_Pack') ) &&
 		!is_single() && !is_home() && !is_page() && !is_search() )
@@ -628,10 +628,10 @@ function _wpcs_permalink_preg_callback($matches) {
 function wpcs_link_conversion($link, $variant = null) {
 	global $wpcs_options;
 
-	static $wpcs_wp_homepath;
-	if( empty($wpcs_wp_homepath) ) {
+	static $wpcs_wp_home;
+	if( empty($wpcs_wp_home) ) {
 		$home = parse_url(home_url());
-		$wpcs_wp_homepath = trailingslashit($home["path"]);
+		$wpcs_wp_home = trailingslashit($home["path"]);
 	}
 
 	if( $variant === null ) $variant = $GLOBALS['wpcs_target_lang'];
@@ -641,7 +641,7 @@ function wpcs_link_conversion($link, $variant = null) {
 		return add_query_arg('variant', $variant, $link);
 	if($wpcs_options['wpcs_use_permalink'] == 1)
 		return user_trailingslashit(trailingslashit($link) . $variant);
-	return preg_replace('#^(http(s?)://[^/]+' . $wpcs_wp_homepath . ')#', '\\1' . $variant . '/', $link);
+	return preg_replace('#^(http(s?)://[^/]+' . $wpcs_wp_home . ')#', '\\1' . $variant . '/', $link);
 }
 
 /**

@@ -1,13 +1,13 @@
 <?php
 /**
- * 本文件是為第三方應用預留的. 本插件中不會載入和使用這個文件.
+ * 本文档是为第三方应用预留的. 本插件中不会加载和使用这个文档.
  * 
- * 通過include本文件, 您可以使用中文繁簡轉換函數zhconversion($str, $variant)
- * 如果$_GET['doconversion']或$_POST['doconversion'])有設置, 本文件將獲取$_REQUEST['data']并把其轉換為$_REQUEST['variant']語言后輸出.
+ * 通过include本文档, 您可以使用中文繁简转换函数zhconversion($str, $variant)
+ * 如果$_GET['doconversion']或$_POST['doconversion'])有设置, 本文档将获取$_REQUEST['data']并把其转换为$_REQUEST['variant']语言后输出.
  *
- * 您不應該也不需要在Wordpress程序, 插件/主題 或 任何已經包含wp-config.php文件的php程序中包含本文件
+ * 您不应该也不需要在Wordpress进程, 插件/主题 或 任何已经包含wp-config.php文档的php进程中包含本文档
  *
- * 本插件目录下convert.html是一个简单的在线繁简转换工具, 使用了本php文件. 当作是本插件的bonus吧 ^_^
+ * 本插件目录下convert.html是一个简单的在线繁简转换工具, 使用了本php文档. 当作是本插件的bonus吧 ^_^
  */
 
 global $zh2Hans, $zh2Hant, $zh2TW, $zh2CN, $zh2SG, $zh2HK;
