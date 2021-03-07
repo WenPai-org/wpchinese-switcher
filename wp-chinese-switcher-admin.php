@@ -278,19 +278,6 @@ URL末尾是否有 / 取决于您的Wordpress永久链接末尾是否有/. 但<b
 </td>
 </tr>
 
-<tr>
-<td valign="top" width="30%"><a title="单击查看帮助" style="cursor: pointer;" onclick="toggleVisibility('wpcs_help_credit');">您喜欢这个插件吗?</a></td>
-<td>
-<input type="checkbox" id="wpcso_trackback_plugin_author" name="wpcso_trackback_plugin_author"<?php echo $this->options['wpcs_trackback_plugin_author'] != 0 ? ' checked="checked"' : ''; ?> value="<?php echo $this->options['wpcs_trackback_plugin_author'] == 2 ? '2' : '1'; ?>" /><label for="wpcso_trackback_plugin_author"> 告诉作者我在使用本插件(发送一个trackback）</label><br />
-<input type="checkbox" id="wpcso_add_author_link" name="wpcso_add_author_link"<?php echo $this->options['wpcs_add_author_link'] >0 ? ' checked="checked"' : ''; ?> value="" /><label for="wpcso_add_author_link"> 在博客链接里添加插件作者主页</label>
-<div id="wpcs_help_credit" style="display: none;">
-这个插件是免费和自由的. 如果您喜欢本插件, 您可以通过这里的选项支持我们. 告诉作者我在使用本插件
-(通过向<a href="https://oogami.name/project/wpcs/" target="_blank" title="插件主页" >插件主页</a>发送一个trackback);
-或在博客链接(Links)里添加插件作者的主页 (<a href="https://oogami.name/" target="_blank" title="小野大神的 Blog，关注文明与幻想。" >小野大神</a>).
-感谢您的支持.</div>
-</td>
-</tr>
-
 <tr><td><input class="button" type="submit" name="submit" value="保存选项" /></td></tr>
 </tbody></table></form>
 <?php
