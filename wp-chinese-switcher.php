@@ -60,8 +60,8 @@ $wpcs_target_lang = false;
 //您可以更改提示文字,如"简体中文","繁体中文".但是不要改动其它.
 //不要改键值的语言代码zh-xx, 本插件一些地方使用了硬编码的语言代码.
 $wpcs_langs = array(
-    'zh-cn' => array('zhconversion_cn', 'cntip', '大陆简体','zh-CN'),
-    'zh-tw' => array('zhconversion_tw', 'twtip', '台灣正體','zh-TW'),
+    'zh-cn' => array('zhconversion_cn', 'cntip', '简体中文','zh-CN'),
+    'zh-tw' => array('zhconversion_tw', 'twtip', '繁体中文','zh-TW'),
         /*
 	'zh-hans' => array('zhconversion_hans', 'hanstip', '简体中文','zh-Hans'),
 	'zh-hant' => array('zhconversion_hant', 'hanttip', '繁體中文','zh-Hant'),
