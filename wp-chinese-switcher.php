@@ -630,8 +630,7 @@ function wpcs_link_conversion($link, $variant = null) {
 
 	static $wpcs_wp_home;
 	if( empty($wpcs_wp_home) ) {
-		$home = parse_url(home_url());
-		$wpcs_wp_home = trailingslashit($home["path"]);
+		$wpcs_wp_home = home_url();
 	}
 
 	if( $variant === null ) $variant = $GLOBALS['wpcs_target_lang'];
