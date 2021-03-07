@@ -8,16 +8,16 @@ If you are in a page with no Chinese Switcher, this file will not be loaded .
 
 */
 
-window.addEventListener('load', function() {
-	if(typeof wpcs_target_lang == 'undefined') return;
+window.addEventListener('load', function () {
+  if (typeof wpcs_target_lang == 'undefined') return;
 
-	var theTextNode = document.querySelector('input[name="s"]');
-	if (theTextNode) {
-		var wpcs_input_variant = document.createElement("input");
+  var theTextNode = document.querySelector('input[name="s"]');
+  if (theTextNode) {
+    var wpcs_input_variant = document.createElement("input");
     wpcs_input_variant.id = 'wpcs_input_variant';
     wpcs_input_variant.type = 'hidden';
     wpcs_input_variant.name = 'variant';
     wpcs_input_variant.value = wpcs_target_lang;
     theTextNode.parentNode.appendChild(wpcs_input_variant);
-	}
+  }
 });
