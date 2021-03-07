@@ -11,11 +11,6 @@
 
 $GLOBALS['wp_supercache_wpcs_version'] = '1.0';
 
-$GLOBALS['wpcs_options'] = array(
-	'wpcs_used_langs' => ##wpcs_used_langs##,
-	'wpcs_auto_language_recong' => ##wpcs_auto_language_recong##,
-);
-
 function wp_supercache_wpcs_get_prefered_language($accept_languages, $target_langs, $flag = 0) {
 	$langs = array();
 	preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $accept_languages, $lang_parse);
