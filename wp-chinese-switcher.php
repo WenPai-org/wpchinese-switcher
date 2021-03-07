@@ -60,14 +60,16 @@ $wpcs_target_lang = false;
 //您可以更改提示文字,如"简体中文","繁体中文".但是不要改动其它.
 //不要改键值的语言代码zh-xx, 本插件一些地方使用了硬编码的语言代码.
 $wpcs_langs = array(
+    'zh-cn' => array('zhconversion_cn', 'cntip', '大陆简体','zh-CN'),
+    'zh-tw' => array('zhconversion_tw', 'twtip', '台灣正體','zh-TW'),
+        /*
 	'zh-hans' => array('zhconversion_hans', 'hanstip', '简体中文','zh-Hans'),
 	'zh-hant' => array('zhconversion_hant', 'hanttip', '繁體中文','zh-Hant'),
-	'zh-cn' => array('zhconversion_cn', 'cntip', '大陆简体','zh-CN'),
 	'zh-hk' => array('zhconversion_hk', 'hktip', '港澳繁體','zh-HK'),
 	'zh-mo' => array('zhconversion_hk', 'motip', '澳門繁體','zh-MO'),
 	'zh-sg' => array('zhconversion_sg', 'sgtip', '马新简体','zh-SG'),
 	'zh-my' => array('zhconversion_sg', 'mytip', '马来西亚简体','zh-MY'),
-	'zh-tw' => array('zhconversion_tw', 'twtip', '台灣正體','zh-TW'),
+        */
 );
 
 //容错处理.
@@ -881,7 +883,7 @@ function wpcs_output_navi2() {
 	$output .= '	<span id="wpcs_original_link" class="' . ( $wpcs_target_lang == false ? 'wpcs_current_lang' : 'wpcs_lang' ) .'" ><a class="wpcs_link" href="' . esc_url($default_url) . '" title="不轉換">不轉換</a></span>' ."\n";
 	$output .= '	<span id="wpcs_cn_link" class="'. ( $wpcs_target_lang == 'zh-cn' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '" ><a class="wpcs_link" rel="nofollow" href="'. esc_url($wpcs_langs_urls['zh-cn']) . '" title="大陆简体" >大陆简体</a></span>' ."\n";
 	$output .= '	<span id="wpcs_tw_link" class="'. ( $wpcs_target_lang == 'zh-tw' ? 'wpcs_current_lang' : 'wpcs_lang' ) .'"><a class="wpcs_link" rel="nofollow" href="'. esc_url($wpcs_langs_urls['zh-tw']) .'" title="台灣正體" >台灣正體</a></span>' ."\n";
-	$output .= '	<span id="wpcs_more_links" class="wpcs_lang" >
+	/*$output .= '	<span id="wpcs_more_links" class="wpcs_lang" >
 	<span id="wpcs_more_links_inner_more" class="'. ( ( $wpcs_target_lang == false || $wpcs_target_lang == 'zh-cn' || $wpcs_target_lang == 'zh-tw' ) ? 'wpcs_lang' : 'wpcs_current_lang' ) . '"><a class="wpcs_link" href="#" onclick="return false;" >其它中文</a></span>
 		<span id="wpcs_more_links_inner" >
 			<span id="wpcs_hans_link" class="' . ( $wpcs_target_lang == 'zh-hans' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-hans']) . '" title="简体中文" >简体中文' . '</a></span>
@@ -889,7 +891,7 @@ function wpcs_output_navi2() {
 			<span id="wpcs_hk_link" class="' . ( $wpcs_target_lang == 'zh-hk' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '"><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-hk']) . '" title="港澳繁體" >港澳繁體</a></span>
 			<span id="wpcs_sg_link" class="' . ( $wpcs_target_lang == 'zh-sg' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-sg']) . '" title="马新简体" >马新简体</a></span>
 		</span>
-	</span>';
+	</span>';*/
 
 	$output .= '<!--wpcs_NC_END--></div>' . "\n";
 	echo $output;
