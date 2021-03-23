@@ -30,10 +30,10 @@ class wpcs_Admin {
             $this->admin_lang = $locale;
         }
         $this->base = str_replace(basename(__FILE__), "", plugin_basename(__FILE__));
-        $this->url  = admin_url('options-general.php?page=' . $this->base . 'wp-chinese-switcher.php');
+        $this->url  = admin_url('options-general.php?page=' . $this->base . 'wpchinese-switcher.php');
         add_filter('plugin_action_links', array(&$this, 'action_links'), 10, 2);
         if (function_exists('add_options_page')) {
-            add_options_page('WP Chinese Switcher', 'Chinese Switcher', 'manage_options', $this->base . 'wp-chinese-switcher.php', array(
+            add_options_page('WP Chinese Switcher', 'Chinese Switcher', 'manage_options', $this->base . 'wpchinese-switcher.php', array(
                 &$this,
                 'display_options'
             ));
@@ -43,7 +43,7 @@ class wpcs_Admin {
     }
 
     function action_links($links, $file) {
-        if ($file == $this->base . 'wp-chinese-switcher.php') {
+        if ($file == $this->base . 'wpchinese-switcher.php') {
             $links[] = '<a href="options-general.php?page=' . $file . '" title="Change Settings">Settings</a>';
         }
 

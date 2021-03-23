@@ -4,7 +4,7 @@
 * Description: Adds the language conversion function between Chinese Simplified and Chinese Traditional to your WP Website.
 * Author: WenPai.org
 * Author URI: https://wenpai.org
-* Text Domain: wp-chinese-switcher
+* Text Domain: wpchinese-switcher
 * Domain Path: /languages
 * Version: 1.0.0
 * License: GPLv3 or later
@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
  * @package WPCS
  * @version see wpcs_VERSION constant below
  * @TODO 用OO方式重寫全部代碼, 計劃1.2版本實現.
- * @link http://wordpress.org/plugins/wp-chinese-switcher Plugin Page on wordpress.org, including guides and docs.
+ * @link http://wordpress.org/plugins/wpchinese-switcher Plugin Page on wordpress.org, including guides and docs.
  * @link https://oogami.name/project/wpcs/ Plugin Homepage
  *
  */
@@ -1277,7 +1277,7 @@ function wpcs_debug() {
  */
 function wpcs_admin_init() {
     global $wpcs_admin;
-    require_once(dirname(__FILE__) . '/wp-chinese-switcher-admin.php');
+    require_once(dirname(__FILE__) . '/wpchinese-switcher-admin.php');
     $wpcs_admin = new wpcs_Admin();
 }
 
