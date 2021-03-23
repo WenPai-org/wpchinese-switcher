@@ -1,6 +1,5 @@
 === WP Chinese Switcher ===
 Contributors: wpfanyi
-Donate link: https://oogami.name/donate/
 Tags: chinese, 中文, 繁体, 简体, 繁简转换, Chinese Simplified, Chinese Traditional, widget, sidebar
 Requires at least: 4.5
 Tested up to: 5.7
