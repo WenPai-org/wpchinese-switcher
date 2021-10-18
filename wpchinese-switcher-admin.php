@@ -98,11 +98,11 @@ class wpcs_Admin {
         if ( ! empty($_POST['wpcso_uninstall_nonce'])) {
             delete_option('wpcs_options');
             update_option('rewrite_rules', '');
-            echo '<div class="wrap"><h2>WP Chinese Switcher Setting</h2><div class="updated">Uninstall Successfully. 卸载成功, 現在您可以到<a href="plugins.php">插件菜单</a>里禁用本插件.</div></div>';
+            echo '<div class="wrap"><h2>WP Chinese Switcher Setting</h2><div class="updated">Uninstall Successfully. 卸载成功, 现在您可以到<a href="plugins.php">插件菜单</a>里禁用本插件.</div></div>';
 
             return;
         } else if ($this->options === false) {
-            echo '<div class="wrap"><h2>WP Chinese Switcher Setting</h2><div class="error">错误: 没有找到配置信息, 可能由于Wordpress系统错误或者您已经卸载了本插件. 您可以<a href="plugins.php">尝试</a>禁用本插件后再重新激活.</div></div>';
+            echo '<div class="wrap"><h2>WP Chinese Switcher Setting</h2><div class="error">错误: 没有找到配置信息, 可能由于WordPress系统错误或者您已经卸载了本插件. 您可以<a href="plugins.php">尝试</a>禁用本插件后再重新激活.</div></div>';
 
             return;
         }
@@ -158,7 +158,7 @@ class wpcs_Admin {
             <div class="error" style=""><p><?php echo $this->message; ?></p></div>
           <?php } ?>
         <p>版本 <?php echo wpcs_VERSION; ?>. <a href="https://wenpai.org/" title="文派开源" target="_blank">文派开源</a> | <a
-                  href="https://wpchineseswitcher.com" target="_blank" title="插件主页">插件主页</a></p>
+                  href="https://wpchinese.cn" target="_blank" title="插件主页">插件主页</a></p>
         <div style="padding-top:20px;padding-bottom:20px;"><b>单击选项名查看帮助!</b></div>
         <form id="wpcso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>"><input type="hidden"
                                                                                                    name="wpcso_submitted"
@@ -191,7 +191,7 @@ class wpcs_Admin {
                        value="<?php echo ! empty($this->options[$value[1]]) ? esc_html($this->options[$value[1]]) : ''; ?>"/><br/>
                   <?php } ?><!--wpcs_NC_END-->
                 <div id="wpcs_help_uls" style="display: none;">未选中的中文语言将不被使用,此项设置为全局设置.您应该选中至少一种中文语言,否则本插件全部功能都不会工作.
-                  在每个复选框后的文本输入框里可以输入该语言自定义名称, 如果留空会使用默认值. <!--wpcs_NC_START-->("简体中文", "繁體中文"...)
+                  在每个复选框后的文本输入框里可以输入该语言自定义名称, 如果留空会使用默认值. <!--wpcs_NC_START-->("简体中文", "繁体中文"...)
                   <!--wpcs_NC_END--></div>
               </td>
             </tr>
@@ -212,13 +212,13 @@ class wpcs_Admin {
                     仅当中文语言不是"不转换"时开启(默认值)
                   </option>
                 </select>
-                <div id="wpcs_help_sc" style="display: none;">本选项将增强Wordpress搜索功能, 使其对中文关键词繁简统一处理.
+                <div id="wpcs_help_sc" style="display: none;">本选项将增强WordPress搜索功能, 使其对中文关键词繁简统一处理.
                   例如搜索"<!--wpcs_NC_START--><code>网络</code><!--wpcs_NC_END-->"时, 数据库里含有"
                   <!--wpcs_NC_START--><code>网络</code><!--wpcs_NC_END-->",
-                  "<!--wpcs_NC_START--><code>網路</code><!--wpcs_NC_END-->" 和"<!--wpcs_NC_START--><code>網絡</code>
+                  "<!--wpcs_NC_START--><code>网络</code><!--wpcs_NC_END-->" 和"<!--wpcs_NC_START--><code>网络</code>
                   <!--wpcs_NC_END-->"的文章都会放到搜索结果里返回.
                   支持多个中文词语搜索, 如搜索"<!--wpcs_NC_START--><code>简体 繁体</code><!--wpcs_NC_END-->"时,
-                  含有"<!--wpcs_NC_START--><code>簡體</code><!--wpcs_NC_END-->"和"<!--wpcs_NC_START--><code>繁體</code>
+                  含有"<!--wpcs_NC_START--><code>简体</code><!--wpcs_NC_END-->"和"<!--wpcs_NC_START--><code>繁体</code>
                   <!--wpcs_NC_END-->"两个词的文章也会被返回.
                   (此功能将增加搜索时数据库负担)
                 </div>
@@ -242,15 +242,15 @@ class wpcs_Admin {
                 </select> <input type="checkbox" name="wpcso_auto_language_recong" id="wpcso_auto_language_recong"
                                  value=""<?php echo $this->options['wpcs_auto_language_recong'] == 1 ? ' checked="checked"' : ''; ?> /><label
                         for="wpcso_auto_language_recong">允许繁简语系内部通用.</label>
-                <div id="wpcs_help_ua" style="display: none;"><b>本项设置不会应用于搜索引擎.</b> 如果本选项设置不为"关闭", 程序将识别访客浏览器首选中文语言.
-                  如果设置为"跳转到对应繁简版本页面", 程序将302重定向到当前页面的访客浏览器首选语言版本.
-                  如果设置为"直接显示对应繁简版本内容",程序将直接显示对应中文转换版本内容而不进行重定向. <b>如果本选项设置为"直接显示对应繁简版本内容",
+                <div id="wpcs_help_ua" style="display: none;"><b>本项设置不会应用于搜索引擎.</b> 如果本选项设置不为"关闭", 进程将识别访客浏览器首选中文语言.
+                  如果设置为"跳转到对应繁简版本页面", 进程将302重定向到当前页面的访客浏览器首选语言版本.
+                  如果设置为"直接显示对应繁简版本内容",进程将直接显示对应中文转换版本内容而不进行重定向. <b>如果本选项设置为"直接显示对应繁简版本内容",
                     必须把下一个选项"使用Cookie保存并识别用户语言偏好"关闭或也设置为直接显示对应繁简版本,否则本插件只会在浏览器第一次访问时直接显示,
                     其他情况跳转.</b>.<br/><br/>关于"<b>允许繁简语系内部通用</b>"复选项说明: 只有当"识别浏览器动作"选项不为"关闭"时该复选框才有效. 具体说明,
-                  假如您在本页第一项设置里禁用了部分中文,如zh-hk, 那么浏览器里语言设置里只有"<!--wpcs_NC_START--> 港澳繁體<!--wpcs_NC_END--> "的用户访问时默认不会被识别;
-                  但如果选中了此复选框,只要您开启了"<!--wpcs_NC_START--> 繁體中文<!--wpcs_NC_END--> ", "<!--wpcs_NC_START--> 台灣正體
+                  假如您在本页第一项设置里禁用了部分中文,如zh-hk, 那幺浏览器里语言设置里只有"<!--wpcs_NC_START--> 港澳繁体<!--wpcs_NC_END--> "的用户访问时默认不会被识别;
+                  但如果选中了此复选框,只要您开启了"<!--wpcs_NC_START--> 繁体中文<!--wpcs_NC_END--> ", "<!--wpcs_NC_START--> 台湾正体
                   <!--wpcs_NC_END--> "
-                  或 "<!--wpcs_NC_START--> 港澳繁體<!--wpcs_NC_END--> " 中任一种语言, 浏览器使用这三种语言的用户都会被本插件识别并根据选项做出动作.
+                  或 "<!--wpcs_NC_START--> 港澳繁体<!--wpcs_NC_END--> " 中任一种语言, 浏览器使用这三种语言的用户都会被本插件识别并根据选项做出动作.
                   (但此时页面被转换后的语言可能并不是用户浏览器设置的那种, 而是您开启的那种繁体语言). 简体语系同理.<br/></div>
               </td>
             </tr>
@@ -274,7 +274,7 @@ class wpcs_Admin {
                   当用户通过 "<?php echo $this->options['wpcs_use_permalink'] ?
                         esc_html(trailingslashit(wpcs_link_conversion(get_option('home') . '/', 'zh-tw'))) :
                         esc_html(wpcs_link_conversion(get_option('home') . '/', 'zh-tw')); ?>"
-                  这个链接访问了您博客的台湾繁体版本时,程序将保存信息到Cookie中. 如果该用户重启浏览器并通过 "<?php echo get_option('home'); ?>/" 再次访问您博客时,
+                  这个链接访问了您网站的台湾繁体版本时,进程将保存信息到Cookie中. 如果该用户重启浏览器并通过 "<?php echo get_option('home'); ?>/" 再次访问您网站时,
                   则会被自动跳转到台湾繁体版本的地址. 如果设置为"直接显示对应繁简版本",则不会进行跳转.
                   (参见上一项的说明)<br/><br/><b>本选项和上一项"识别浏览器"选项与缓存插件不兼容</b>.如果您使用了WP Super Cache/ Hyper Cache之类Cache插件,
                   请把这两项设置均设为"关闭",否则这两个功能不但不会正常工作, 而且可能造成缓存异常.<br/></div>
@@ -307,9 +307,9 @@ class wpcs_Admin {
                 <label for="wpcso_no_conversion_ja">(默认关闭)</label>
                 <div id="wpcs_help_nc_ja" style="display: none;">如果选中此选项, 文章内容中用 lang="ja" 标记为日本语的html tag将不进行繁简转换,
                   保持原样输出.
-                  例如: "<!--wpcs_NC_START--><code lang="ja">&lt;span lang="ja"&gt;あなたを、お連れしましょうか？ この町の願いが叶う場所に。&lt;/span&gt;</code>
+                  例如: "<!--wpcs_NC_START--><code lang="ja">&lt;span lang="ja"&gt;あなたを、お连れしましょうか？ この町の愿いが叶う场所に。&lt;/span&gt;</code>
                   <!--wpcs_NC_END-->"
-                  中的CJK汉字<!--wpcs_NC_START--><code lang="ja">連</code><!--wpcs_NC_END-->和<!--wpcs_NC_START--><code
+                  中的CJK汉字<!--wpcs_NC_START--><code lang="ja">连</code><!--wpcs_NC_END-->和<!--wpcs_NC_START--><code
                           lang="ja">叶</code><!--wpcs_NC_END-->将不会进行繁简转换.
                   如果遇到html错误, 请关闭此选项.
                 </div>
@@ -318,18 +318,18 @@ class wpcs_Admin {
 
             <tr>
               <td valign="top" width="30%"><a title="单击查看帮助" style="cursor: pointer;"
-                                              onclick="toggleVisibility('wpcs_no_conversion_qtag');">不转换HTML中任意內容TAG:</a>
+                                              onclick="toggleVisibility('wpcs_no_conversion_qtag');">不转换HTML中任意内容TAG:</a>
               </td>
               <td>
-                <!--wpcs_NC_START--><code>&lt;!--wpcs_NC_START--&gt;爱与正义, 剑與魔法, 光榮與夢想&lt;!--wpcs_NC_END--&gt;</code>
+                <!--wpcs_NC_START--><code>&lt;!--wpcs_NC_START--&gt;爱与正义, 剑与魔法, 光荣与梦想&lt;!--wpcs_NC_END--&gt;</code>
                 <!--wpcs_NC_END--><br/>
                 <input type="checkbox" name="wpcso_no_conversion_qtag"
                        id="wpcso_no_conversion_qtag" <?php echo ! empty($this->options['wpcs_no_conversion_qtag']) ? ' checked="checked"' : ''; ?> />
-                <label for="wpcso_no_conversion_qtag">在Wordpress文章html编辑器中添加"不转换中文"的Quick tag</label>
+                <label for="wpcso_no_conversion_qtag">在WordPress文章html编辑器中添加"不转换中文"的Quick tag</label>
                 <div id="wpcs_no_conversion_qtag" style="display: none;">
                   HTML中所有位于 <code>&lt;!--wpcs_NC_START--&gt;</code> 和 <code>&lt;!--wpcs_NC_END--&gt;</code>之间的内容将不会进行繁简转换,
                   保持原样输出.
-                  您可以在模板或post内容中使用这个标签.<br/>您可以选择在Wordpress的文章编辑器(html模式)工具栏中插入一个按钮(显示为"wpcs_NC"), 方便快速在文章中插入这个标签.
+                  您可以在模板或post内容中使用这个标签.<br/>您可以选择在WordPress的文章编辑器(html模式)工具栏中插入一个按钮(显示为"wpcs_NC"), 方便快速在文章中插入这个标签.
                 </div>
               </td>
             </tr>
@@ -351,7 +351,7 @@ class wpcs_Admin {
                 <div id="wpcs_help_pl" style="display: none;">更改此项设置前,<b>请仔细阅读下面的说明:</b><br/>本项设置决定插件生成的繁简转换页面Permalink.
                   默认的形式为您原始Permalink后加上?variant=zh-tw参数.(zh-tw为当前请求的语言代码) .您可以修改这个permalink形式.本插件提供两种非默认的Permalink格式:
                   您原始的Permalink后加上/zh-tw 或/zh-tw/; 或/zh-tw后加上您原来Permalink. 两种区别在于中文语言代码(zh-tw)附加在您原来Permalink的末尾或开头.
-                  URL末尾是否有 / 取决于您的Wordpress永久链接末尾是否有/. 但<b>首页的繁简转换版本URL末尾永远有 "/"</b> . 如果您的Wordpress未开启永久链接,
+                  URL末尾是否有 / 取决于您的WordPress永久链接末尾是否有/. 但<b>首页的繁简转换版本URL末尾永远有 "/"</b> . 如果您的WordPress未开启永久链接,
                   本项设置只能选择第一种URL形式.
                 </div>
               </td>
@@ -365,7 +365,7 @@ class wpcs_Admin {
                        name="wpcso_use_fullpage_conversion"<?php echo $this->options['wpcs_use_fullpage_conversion'] == 1 ? ' checked="checked"' : ''; ?> />
                 <label for="wpcso_use_fullpage_conversion">(默认开启)</label>
                 <div id="wpcs_help_ob" style="display: none;">
-                  开启此选项后,插件将对Wordpress输出的全部页面内容进行中文整体转换(使用ob_start和ob_flush函数),
+                  开启此选项后,插件将对WordPress输出的全部页面内容进行中文整体转换(使用ob_start和ob_flush函数),
                   这将极大提高页面生成速度并减少资源使用.但也可能造成意想不到问题.如果遇到异常(包括中文转换错误, HTML页面错误或php错误等),请关闭此选项.
                 </div>
               </td>
@@ -476,7 +476,7 @@ class wpcs_Admin {
 
     function navi() {
         $variant = ! empty($_GET['variant']) ? $_GET['variant'] : '';
-        $str     = '<span><a title="默认/ 默認" href="' . $this->url . '" ' . (! $variant ? 'style="color: #464646; text-decoration: none !important;"' : '') . ' >默认/ 默認</a></span>&nbsp;';
+        $str     = '<span><a title="默认/ 默认" href="' . $this->url . '" ' . (! $variant ? 'style="color: #464646; text-decoration: none !important;"' : '') . ' >默认/ 默认</a></span>&nbsp;';
         if ( ! $this->options['wpcs_used_langs']) {
             return $str;
         }

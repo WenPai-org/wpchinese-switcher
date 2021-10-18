@@ -10,8 +10,10 @@
 * License: GPLv3 or later
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
+
 /*
-Copyright (C) 2009-2013 Ono Oogami, https://oogami.name/ (ono@oogami.name)
+Copyright 2012-2021 WenPai (http://wenpai.org)
+Developer: WenPai
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,15 +32,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 /**
  * WP Chinese Switcher Plugin main file
  *
- * 為Wordpress增加中文繁簡轉換功能. 轉換過程在服務器端完成. 使用的繁簡字符映射表來源于Mediawiki.
+ * 为Wordpress增加中文繁简转换功能. 转换过程在服务器端完成. 使用的繁简字符映射表来源于Mediawiki.
  * 本插件比较耗费资源. 因为对页面内容繁简转换时载入了一个几百KB的转换表(ZhConversion.php), 编译后占用内存超过1.5MB
- * 如果可能, 建议安装xcache/ eAccelerator之类PHP缓存扩展. 可以有效提高速度并降低CPU使用,在生产环境下测试效果非常显著.
+ * 如果可能, 建议安装xcache/ eAccelerator之类PHP缓存扩展. 可以有效提高速度并降低CPU使用,在生产环境下测试效果非常显着.
  *
  * @package WPCS
  * @version see wpcs_VERSION constant below
- * @TODO 用OO方式重寫全部代碼, 計劃1.2版本實現.
+ * @TODO 用OO方式重写全部代码, 计划1.2版本实现.
  * @link http://wordpress.org/plugins/wpchinese-switcher Plugin Page on wordpress.org, including guides and docs.
- * @link https://oogami.name/project/wpcs/ Plugin Homepage
  *
  */
 
@@ -48,7 +49,7 @@ define('wpcs_VERSION', '1.0');
 
 $wpcs_options = get_option('wpcs_options');
 // /**********************
-//初始化所有全局變量.其实不初始化也没关系,主要是防止某些古董php版本register_globals打开可能造成意想不到问题.
+//初始化所有全局变量.其实不初始化也没关系,主要是防止某些古董php版本register_globals打开可能造成意想不到问题.
 $wpcs_admin                  = false;
 $wpcs_noconversion_url       = false;
 $wpcs_redirect_to            = false;
@@ -57,16 +58,16 @@ $wpcs_langs_urls             = array();
 $wpcs_target_lang            = false;
 // ***************************/
 
-//您可以更改提示文字,如"简体中文","繁体中文".但是不要改动其它.
+//您可以更改提示文本,如"简体中文","繁体中文".但是不要改动其它.
 //不要改键值的语言代码zh-xx, 本插件一些地方使用了硬编码的语言代码.
 $wpcs_langs = array(
     'zh-cn' => array('zhconversion_cn', 'cntip', '简体中文', 'zh-CN'),
-    'zh-tw' => array('zhconversion_tw', 'twtip', '繁體中文', 'zh-TW'),
+    'zh-tw' => array('zhconversion_tw', 'twtip', '繁体中文', 'zh-TW'),
     /*
 'zh-hans' => array('zhconversion_hans', 'hanstip', '简体中文','zh-Hans'),
-'zh-hant' => array('zhconversion_hant', 'hanttip', '繁體中文','zh-Hant'),
-'zh-hk' => array('zhconversion_hk', 'hktip', '港澳繁體','zh-HK'),
-'zh-mo' => array('zhconversion_hk', 'motip', '澳門繁體','zh-MO'),
+'zh-hant' => array('zhconversion_hant', 'hanttip', '繁体中文','zh-Hant'),
+'zh-hk' => array('zhconversion_hk', 'hktip', '港澳繁体','zh-HK'),
+'zh-mo' => array('zhconversion_hk', 'motip', '澳门繁体','zh-MO'),
 'zh-sg' => array('zhconversion_sg', 'sgtip', '马新简体','zh-SG'),
 'zh-my' => array('zhconversion_sg', 'mytip', '马来西亚简体','zh-MY'),
     */
@@ -389,9 +390,9 @@ class wpcs_Widget extends WP_Widget {
  *
  * @return converted string
  *
- * 这是本插件繁简转换页使用的基本中文转换函数. 例如, 如果访客请求一个"台灣正體"版本页面,
+ * 这是本插件繁简转换页使用的基本中文转换函数. 例如, 如果访客请求一个"台湾正体"版本页面,
  * $wpcs_conversion_function被设置为'zhconversion_tw',
- * 本函数调用其把字符串转换为"台灣正體"版本
+ * 本函数调用其把字符串转换为"台湾正体"版本
  *
  */
 function zhconversion($str, $variant = null) {
@@ -498,8 +499,8 @@ function zhconversion_safe($str, $variant = null) {
  *
  * @return array converted strings array
  *
- * Example: zhconversion('網絡');
- * Return: array('網路', '网络');
+ * Example: zhconversion('网络');
+ * Return: array('网络', '网络');
  *
  */
 function zhconversion_all($str, $langs = array('zh-tw', 'zh-cn', 'zh-hk', 'zh-sg', 'zh-hans', 'zh-hant')) {
@@ -526,7 +527,7 @@ function zhconversion_deep($value) {
 }
 
 /**
- * 对输入字符串进行有限中文转换. 不转换<!--wpcs_NC_START-->和<!--wpcs_NC_END-->之間的中文
+ * 对输入字符串进行有限中文转换. 不转换<!--wpcs_NC_START-->和<!--wpcs_NC_END-->之间的中文
  *
  * @param string $str string inputed
  * @param string $function conversion function for current requested chinese language
@@ -555,7 +556,7 @@ function limit_zhconversion($str, $function) {
 
 
 /**
- * 中文轉換函數. (zhconversion_hans轉換字符串為簡體中文, zhconversion_hant轉換字符串為繁體中文, zhconversion_tw轉換字符串為臺灣正體, 依次類推)
+ * 中文转换函数. (zhconversion_hans转换字符串为简体中文, zhconversion_hant转换字符串为繁体中文, zhconversion_tw转换字符串为台湾正体, 依次类推)
  *
  * @param string $str string to be converted
  *
@@ -563,7 +564,7 @@ function limit_zhconversion($str, $function) {
  *
  * 对于zh-hans和zh-hant以外中文语言(如zh-tw),Mediawiki里的做法是 先array_merge($zh2Hans, $zh2TW),再做一次strtr. 但这里考虑到内存需求和CPU资源,采用两次strtr方法.其中$zh2TW先做,因为其中项目可能覆盖zh2Hant里的项目
  *
- * 注意: 如果您想在其他地方(如Theme)里使用下面中文轉換函數, 請保證首先調用一次wpcs_load_conversion_table(); , 因為出于節省內存需求, 本插件僅在繁簡轉換頁面才會載入中文轉換表.
+ * 注意: 如果您想在其他地方(如Theme)里使用下面中文转换函数, 请保证首先调用一次wpcs_load_conversion_table(); , 因为出于节省内存需求, 本插件仅在繁简转换页面才会加载中文转换表.
  *
  */
 function zhconversion_hant($str) {
@@ -699,14 +700,14 @@ function _wpcs_permalink_preg_callback($matches) {
 }
 
 /**
- * 修改繁簡轉換頁面WP內部鏈接
+ * 修改繁简转换页面WP内部链接
  *
  * @param string $link URL to be converted
  *
  * @return string converted URL
  *
- * 如果訪客請求一個繁簡轉換頁面, 本函數把該頁的所有鏈接轉換為對應中文語言版本的
- * 例如把分類頁鏈接轉換為 /category/cat-name/zh-xx/, 把Tag頁鏈接轉換為 /tag/tag-name/zh-xx/
+ * 如果访客请求一个繁简转换页面, 本函数把该页的所有链接转换为对应中文语言版本的
+ * 例如把分类页链接转换为 /category/cat-name/zh-xx/, 把Tag页链接转换为 /tag/tag-name/zh-xx/
  *
  */
 function wpcs_link_conversion($link, $variant = null) {
@@ -756,12 +757,12 @@ function wpcs_link_conversion_auto($link, $variant = null) {
 }
 
 /**
- * 獲取當前頁面原始URL
+ * 获取当前页面原始URL
  * @return original permalink of current page
  *
- * 本函數返回當前請求頁面"原始版本" URL.
- * 即如果當前URL是 /YYYY/mm/sample-post/zh-tw/ 形式的臺灣正體版本,
- * 會返回 /YYYY/mm/sample-post/ 的原始(不進行中文轉換)版本鏈接.
+ * 本函数返回当前请求页面"原始版本" URL.
+ * 即如果当前URL是 /YYYY/mm/sample-post/zh-tw/ 形式的台湾正体版本,
+ * 会返回 /YYYY/mm/sample-post/ 的原始(不进行中文转换)版本链接.
  *
  */
 function wpcs_get_noconversion_url() {
@@ -773,7 +774,7 @@ function wpcs_get_noconversion_url() {
     $tmp = trim(strtolower(remove_query_arg('variant', $tmp)));
 
     if (preg_match('/^(.*)\/(' . $reg . '|zh|zh-reset)(\/.*)?$/', $tmp, $matches)) {
-        $tmp = user_trailingslashit(trailingslashit($matches[1]) . ltrim($matches[3], '/')); //为什么这样写代码? 是有原因的- -(众人: 废话!)
+        $tmp = user_trailingslashit(trailingslashit($matches[1]) . ltrim($matches[3], '/')); //为什幺这样写代码? 是有原因的- -(众人: 废话!)
         if ($tmp == get_option('home')) {
             $tmp .= '/';
         }
@@ -783,16 +784,16 @@ function wpcs_get_noconversion_url() {
 }
 
 /**
- * 修復繁簡轉換頁分頁鏈接
+ * 修复繁简转换页分页链接
  *
  * @param string $link URL to be fixed
  *
  * @return string Fixed URL
  *
- * 本函數修復繁簡轉換頁面 /.../page/N 形式的分頁鏈接為正確形式. 具體說明略.
+ * 本函数修复繁简转换页面 /.../page/N 形式的分页链接为正确形式. 具体说明略.
  *
- * 您可以在本函數內第一行加上 'return $link;' 然后訪問您博客首頁或存檔頁的繁體或簡體版本,
- * 會發現"上一頁"(previous posts page)和"下一頁"(next posts page)的鏈接URL是錯誤的.
+ * 您可以在本函数内第一行加上 'return $link;' 然后访问您博客首页或存盘页的繁体或简体版本,
+ * 会发现"上一页"(previous posts page)和"下一页"(next posts page)的链接URL是错误的.
  * 本函数算法极为愚蠢- -, 但是没有其它办法, 因为wordpress对于分页链接的生成策略非常死板且无法更多地通过filter控制
  *
  */
@@ -825,10 +826,10 @@ function wpcs_pagenum_link_fix($link) {
  * @return string Fixed URL
  *
  * 本插件会添加 post_link钩子, 从而修改繁简转换页单篇文章页永久链接, 但WP的很多内部链接生成依赖这个permalink.
- * (为什么加载在post_link钩子上而不是the_permalink钩子上? 有很多原因,这里不说了.)
+ * (为什幺加载在post_link钩子上而不是the_permalink钩子上? 有很多原因,这里不说了.)
  *
  * 举例而言, 本插件把 繁简转换页的文章permalink修改为 /YYYY/mm/sample-post/zh-tw/ (如果您原来的Permalink是/YYYY/mm/sample-post/)
- * 那么WP生成的该篇文章评论Feed链接是 /YYYY/mm/sample-post/zh-tw/feed/, 出错
+ * 那幺WP生成的该篇文章评论Feed链接是 /YYYY/mm/sample-post/zh-tw/feed/, 出错
  * 本函数把这个链接修复为 /YYYY/mm/sample-post/feed/zh-tw/ 的正确形式.
  *
  */
@@ -855,15 +856,15 @@ function wpcs_fix_link_conversion($link) {
 }
 
 /**
- * "取消"繁简转换后页面部分内部链接轉換.
+ * "取消"繁简转换后页面部分内部链接转换.
  *
  * @param string $link URL to be fixed
  *
  * @return string Fixed URL
  *
- * 本函數作用與上面的wpcs_fix_link_conversion類似, 不同的是本函數"取消"而不是"修復"繁簡轉換頁內部鏈接
- * 舉例而言, 對繁簡轉換頁面而言, WP生成的單篇文章trackback地址 是 /YYYY/mm/sample-post/zh-tw/trackback/
- * 本函數把它修改為 /YYYY/mm/sample-post/trackback/的正確形式(即去除URL中 zh-xx字段)
+ * 本函数作用与上面的wpcs_fix_link_conversion类似, 不同的是本函数"取消"而不是"修复"繁简转换页内部链接
+ * 举例而言, 对繁简转换页面而言, WP生成的单篇文章trackback地址 是 /YYYY/mm/sample-post/zh-tw/trackback/
+ * 本函数把它修改为 /YYYY/mm/sample-post/trackback/的正确形式(即去除URL中 zh-xx字段)
  *
  */
 function wpcs_cancel_link_conversion($link) {
@@ -900,11 +901,11 @@ function wpcs_rel_canonical() {
 
 
 /**
- * 返回w3c標準的當前中文語言代碼,如 zh-CN, zh-Hans
- * 返回值可以用在html元素的 lang=""標籤裡
+ * 返回w3c标准的当前中文语言代码,如 zh-CN, zh-Hans
+ * 返回值可以用在html元素的 lang=""标签里
  *
  * @since 1.1.9
- * @link http://www.w3.org/International/articles/language-tags/ W3C關於language attribute文章.
+ * @link http://www.w3.org/International/articles/language-tags/ W3C关于language attribute文章.
  */
 function variant_attribute($default = "zh", $variant = false) {
     global $wpcs_langs;
@@ -919,7 +920,7 @@ function variant_attribute($default = "zh", $variant = false) {
 }
 
 /**
- * 返回當前語言代碼
+ * 返回当前语言代码
  * @since 1.1.9
  */
 function variant($default = false) {
@@ -953,9 +954,9 @@ function wpcs_output_navi($args = '') {
         $noconverttip = $wpcs_options['nctip'];
     } else {
         $locale = str_replace('_', '-', strtolower(get_locale()));
-        if (in_array($locale, array('zh-hant', 'zh-tw', 'zh-hk', 'zh-mo'))) //zh-mo = 澳門繁體, 目前與zh-hk香港繁體轉換表相同
+        if (in_array($locale, array('zh-hant', 'zh-tw', 'zh-hk', 'zh-mo'))) //zh-mo = 澳门繁体, 目前与zh-hk香港繁体转换表相同
         {
-            $noconverttip = '不轉換';
+            $noconverttip = '不转换';
         } else {
             $noconverttip = '不转换';
         }
@@ -1008,15 +1009,15 @@ function wpcs_output_navi2() {
     }
 
     $output = "\n" . '<div id="wpcs_widget_inner"><!--wpcs_NC_START-->' . "\n";
-    $output .= '	<span id="wpcs_original_link" class="' . ($wpcs_target_lang == false ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" href="' . esc_url($default_url) . '" title="不轉換">不轉換</a></span>' . "\n";
+    $output .= '	<span id="wpcs_original_link" class="' . ($wpcs_target_lang == false ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" href="' . esc_url($default_url) . '" title="不转换">不转换</a></span>' . "\n";
     $output .= '	<span id="wpcs_cn_link" class="' . ($wpcs_target_lang == 'zh-cn' ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-cn']) . '" title="大陆简体" >大陆简体</a></span>' . "\n";
-    $output .= '	<span id="wpcs_tw_link" class="' . ($wpcs_target_lang == 'zh-tw' ? 'wpcs_current_lang' : 'wpcs_lang') . '"><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-tw']) . '" title="台灣正體" >台灣正體</a></span>' . "\n";
+    $output .= '	<span id="wpcs_tw_link" class="' . ($wpcs_target_lang == 'zh-tw' ? 'wpcs_current_lang' : 'wpcs_lang') . '"><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-tw']) . '" title="台湾正体" >台湾正体</a></span>' . "\n";
     /*$output .= '	<span id="wpcs_more_links" class="wpcs_lang" >
       <span id="wpcs_more_links_inner_more" class="'. ( ( $wpcs_target_lang == false || $wpcs_target_lang == 'zh-cn' || $wpcs_target_lang == 'zh-tw' ) ? 'wpcs_lang' : 'wpcs_current_lang' ) . '"><a class="wpcs_link" href="#" onclick="return false;" >其它中文</a></span>
           <span id="wpcs_more_links_inner" >
               <span id="wpcs_hans_link" class="' . ( $wpcs_target_lang == 'zh-hans' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-hans']) . '" title="简体中文" >简体中文' . '</a></span>
-              <span id="wpcs_hant_link" class="' . ( $wpcs_target_lang == 'zh-hant' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-hant']) . '" title="繁體中文" >繁體中文' . '</a></span>
-              <span id="wpcs_hk_link" class="' . ( $wpcs_target_lang == 'zh-hk' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '"><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-hk']) . '" title="港澳繁體" >港澳繁體</a></span>
+              <span id="wpcs_hant_link" class="' . ( $wpcs_target_lang == 'zh-hant' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-hant']) . '" title="繁体中文" >繁体中文' . '</a></span>
+              <span id="wpcs_hk_link" class="' . ( $wpcs_target_lang == 'zh-hk' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '"><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-hk']) . '" title="港澳繁体" >港澳繁体</a></span>
               <span id="wpcs_sg_link" class="' . ( $wpcs_target_lang == 'zh-sg' ? 'wpcs_current_lang' : 'wpcs_lang' ) . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-sg']) . '" title="马新简体" >马新简体</a></span>
           </span>
       </span>';*/
@@ -1172,13 +1173,13 @@ function wpcs_apply_filter_search_rule() {
  * @return string WHERE sentence have been processed
  *
  * 使用方法: add_filter('posts_where', 'wpcs_filter_search_rule');
- * 原理说明: 假设访客通过表单搜索 "简体 繁體 中文", Wordpress生成的sql语句条件$where中一部分是这样的:
+ * 原理说明: 假设访客通过表单搜索 "简体 繁体 中文", Wordpress生成的sql语句条件$where中一部分是这样的:
  *
- * ((wp_posts.post_title LIKE '%简体%') OR (wp_posts.post_content LIKE '%简体%')) AND ((wp_posts.post_title LIKE '%繁體%') OR (wp_posts.post_content LIKE '%繁體%')) AND ((wp_posts.post_title LIKE '%中文%') OR (wp_posts.post_content LIKE '%中文%')) OR (wp_posts.post_title LIKE '%简体 繁體 中文%') OR (wp_posts.post_content LIKE '%简体 繁體 中文%')
+ * ((wp_posts.post_title LIKE '%简体%') OR (wp_posts.post_content LIKE '%简体%')) AND ((wp_posts.post_title LIKE '%繁体%') OR (wp_posts.post_content LIKE '%繁体%')) AND ((wp_posts.post_title LIKE '%中文%') OR (wp_posts.post_content LIKE '%中文%')) OR (wp_posts.post_title LIKE '%简体 繁体 中文%') OR (wp_posts.post_content LIKE '%简体 繁体 中文%')
  *
  * 本函数把$where中的上面这部分替换为:
  *
- * ( ( wp_posts.post_title LIKE '%簡體%') OR ( wp_posts.post_content LIKE '%簡體%') OR ( wp_posts.post_title LIKE '%简体%') OR ( wp_posts.post_content LIKE '%简体%') ) AND ( ( wp_posts.post_title LIKE '%繁体%') OR ( wp_posts.post_content LIKE '%繁体%') OR ( wp_posts.post_title LIKE '%繁體%') OR ( wp_posts.post_content LIKE '%繁體%') ) AND ( ( wp_posts.post_title LIKE '%中文%') OR ( wp_posts.post_content LIKE '%中文%') ) OR ( wp_posts.post_title LIKE '%簡體 繁體 中文%') OR ( wp_posts.post_content LIKE '%簡體 繁體 中文%') OR ( wp_posts.post_title LIKE '%简体 繁体 中文%') OR ( wp_posts.post_content LIKE '%简体 繁体 中文%') OR ( wp_posts.post_title LIKE '%简体 繁體 中文%') OR ( wp_posts.post_content LIKE '%简体 繁體 中文%')
+ * ( ( wp_posts.post_title LIKE '%简体%') OR ( wp_posts.post_content LIKE '%简体%') OR ( wp_posts.post_title LIKE '%简体%') OR ( wp_posts.post_content LIKE '%简体%') ) AND ( ( wp_posts.post_title LIKE '%繁体%') OR ( wp_posts.post_content LIKE '%繁体%') OR ( wp_posts.post_title LIKE '%繁体%') OR ( wp_posts.post_content LIKE '%繁体%') ) AND ( ( wp_posts.post_title LIKE '%中文%') OR ( wp_posts.post_content LIKE '%中文%') ) OR ( wp_posts.post_title LIKE '%简体 繁体 中文%') OR ( wp_posts.post_content LIKE '%简体 繁体 中文%') OR ( wp_posts.post_title LIKE '%简体 繁体 中文%') OR ( wp_posts.post_content LIKE '%简体 繁体 中文%') OR ( wp_posts.post_title LIKE '%简体 繁体 中文%') OR ( wp_posts.post_content LIKE '%简体 繁体 中文%')
  *
  */
 function wpcs_filter_search_rule($where) {
@@ -1188,7 +1189,7 @@ function wpcs_filter_search_rule($where) {
     }
     if ( ! preg_match("/^([" . chr(228) . "-" . chr(233) . "]{1}[" . chr(128) . "-" . chr(191) . "]{1}[" . chr(128) . "-" . chr(191) . "]{1}){1}/", $wp_query->query_vars['s']) && ! preg_match("/([" . chr(228) . "-" . chr(233) . "]{1}[" . chr(128) . "-" . chr(191) . "]{1}[" . chr(128) . "-" . chr(191) . "]{1}){1}$/", $wp_query->query_vars['s']) && ! preg_match("/([" . chr(228) . "-" . chr(233) . "]{1}[" . chr(128) . "-" . chr(191) . "]{1}[" . chr(128) . "-" . chr(191) . "]{1}){2,}/", $wp_query->query_vars['s'])) {
         return $where;
-    }//如果搜索关键字中不含中文字符, 直接返回
+    }//如果搜索关键字中不含中文本符, 直接返回
 
     wpcs_load_conversion_table();
 
@@ -1286,7 +1287,7 @@ function wpcs_admin_init() {
  *
  * @param object $query 'parse_request' filter' argument, the 'WP' object
  *
- * @todo 彻底重写本函数（目前是一团浆糊）。使用Wordpress原生的query var系統讀/寫variant參數, 1.2版本實現.
+ * @todo 彻底重写本函数（目前是一团浆糊）。使用Wordpress原生的query var系统读/写variant参数, 1.2版本实现.
  * Core codes of this plugin
  * 本函数获取当前请求中文语言并保存到 $wpcs_target_lang全局变量里.
  * 并且还做其它一些事情.
@@ -1522,7 +1523,7 @@ function wpcs_body_class($classes) {
 add_filter("body_class", "wpcs_body_class");
 
 /**
- * 自動修改html tag 的 lang=""標籤為當前中文語言
+ * 自动修改html tag 的 lang=""标签为当前中文语言
  * @since 1.0
  *
  */
