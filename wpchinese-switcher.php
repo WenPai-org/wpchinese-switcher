@@ -47,6 +47,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 define('wpcs_DIR_URL', WP_PLUGIN_URL . '/' . str_replace(basename(__FILE__), "", plugin_basename(__FILE__)));
 define('wpcs_VERSION', '1.0');
 
+// 载入github库 https://github.com/overtrue/php-opencc
+require __DIR__ . '/vendor/autoload.php';
+
+use Overtrue\PHPOpenCC\OpenCC;
+use Overtrue\PHPOpenCC\Strategy;
+
 $wpcs_options = get_option('wpcs_options');
 // /**********************
 //初始化所有全局变量.其实不初始化也没关系,主要是防止某些古董php版本register_globals打开可能造成意想不到问题.
@@ -63,6 +69,8 @@ $wpcs_target_lang            = false;
 $wpcs_langs = array(
     'zh-cn' => array('zhconversion_cn', 'cntip', '简体中文', 'zh-CN'),
     'zh-tw' => array('zhconversion_tw', 'twtip', '繁体中文', 'zh-TW'),
+    'zh-hk' => array('zhconversion_hk', 'hktip', '港澳繁体', 'zh-HK'),
+    'zh-jp' => array('zhconversion_jp', 'jptip', '日本语', 'zh-JP'),
     /*
 'zh-hans' => array('zhconversion_hans', 'hanstip', '简体中文','zh-Hans'),
 'zh-hant' => array('zhconversion_hant', 'hanttip', '繁体中文','zh-Hant'),
@@ -137,6 +145,7 @@ function wpcs_init() {
     }
     add_action('parse_request', 'wpcs_parse_query');
     add_action('template_redirect', 'wpcs_template_redirect', - 100);//本插件核心代码.
+    add_action('enqueue_block_editor_assets', 'my_plugin_enqueue_block_editor_assets');
 }
 
 /**
@@ -323,6 +332,22 @@ function wpcs_template_redirect() {
     }
 
     wpcs_do_conversion();
+}
+
+function set_wpcs_langs_urls()
+{
+    global $wpcs_langs_urls, $wpcs_options, $wpcs_noconversion_url;
+    if (!$wpcs_langs_urls) {
+        if ($wpcs_noconversion_url == get_option('home') . '/' && $wpcs_options['wpcs_use_permalink']) {
+            foreach ($wpcs_options['wpcs_used_langs'] as $value) {
+                $wpcs_langs_urls[$value] = $wpcs_noconversion_url . $value . '/';
+            }
+        } else {
+            foreach ($wpcs_options['wpcs_used_langs'] as $value) {
+                $wpcs_langs_urls[$value] = wpcs_link_conversion($wpcs_noconversion_url, $value);
+            }
+        }
+    }
 }
 
 /**
@@ -586,21 +611,24 @@ function zhconversion_cn($str) {
 }
 
 function zhconversion_tw($str) {
-    global $zh2Hant, $zh2TW;
+    return OpenCC::convert($str, strategy::S2TW);
+    // global $zh2Hant;
 
-    return strtr(strtr($str, $zh2TW), $zh2Hant);
+    // return strtr(OpenCC::convert($str, strategy::S2TW), $zh2Hant);
 }
 
-function zhconversion_sg($str) {
-    global $zh2Hans, $zh2SG;
+function zhconversion_jp($str) {
+    return OpenCC::convert($str, strategy::S2JP);
 
-    return strtr(strtr($str, $zh2SG), $zh2Hans);
+    // global $zh2Hans;
+    // return strtr(OpenCC::convert($str, strategy::S2JP), $zh2Hans);
 }
 
 function zhconversion_hk($str) {
-    global $zh2Hant, $zh2HK;
+    return OpenCC::convert($str, strategy::S2HK);
+    // global $zh2Hant;
 
-    return strtr(strtr($str, $zh2HK), $zh2Hant);
+    // return strtr(OpenCC::convert($str, strategy::S2HK), $zh2Hant);
 }
 
 /**
@@ -940,7 +968,7 @@ function variant($default = false) {
  * 本插件Widget会调用这个函数.
  *
  */
-function wpcs_output_navi($args = '') {
+function wpcs_output_navi($args = '', $isReturn = false) {
     global $wpcs_target_lang, $wpcs_noconversion_url, $wpcs_langs_urls, $wpcs_langs, $wpcs_options;
 
     extract(wp_parse_args($args, array('mode' => 'normal', 'echo' => 1)));
@@ -984,7 +1012,7 @@ function wpcs_output_navi($args = '') {
         $output .= '	<span id="wpcs_' . $key . '_link" class="' . ($wpcs_target_lang == $key ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($value) . '" title="' . esc_html($tip) . '" >' . esc_html($tip) . '</a></span>' . "\n";
     }
     $output .= '<!--wpcs_NC_END--></div>' . "\n";
-    if ( ! $echo) {
+    if ( ! $echo || $isReturn) {
         return $output;
     }
     echo $output;
@@ -1009,9 +1037,9 @@ function wpcs_output_navi2() {
     }
 
     $output = "\n" . '<div id="wpcs_widget_inner"><!--wpcs_NC_START-->' . "\n";
-    $output .= '	<span id="wpcs_original_link" class="' . ($wpcs_target_lang == false ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" href="' . esc_url($default_url) . '" title="不转换">不转换</a></span>' . "\n";
-    $output .= '	<span id="wpcs_cn_link" class="' . ($wpcs_target_lang == 'zh-cn' ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-cn']) . '" title="大陆简体" >大陆简体</a></span>' . "\n";
-    $output .= '	<span id="wpcs_tw_link" class="' . ($wpcs_target_lang == 'zh-tw' ? 'wpcs_current_lang' : 'wpcs_lang') . '"><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-tw']) . '" title="台湾正体" >台湾正体</a></span>' . "\n";
+    $output .= '	<span id="wpcs_original_link" class="' . ($wpcs_target_lang == false ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" href="' . esc_url($default_url) . '" title="'.esc_html('不转换').'">'.esc_html('不转换').'</a></span>' . "\n";
+    $output .= '	<span id="wpcs_cn_link" class="' . ($wpcs_target_lang == 'zh-cn' ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-cn']) . '" title="'.esc_html('大陆简体').'" >'.esc_html('大陆简体').'</a></span>' . "\n";
+    $output .= '	<span id="wpcs_tw_link" class="' . ($wpcs_target_lang == 'zh-tw' ? 'wpcs_current_lang' : 'wpcs_lang') . '"><a class="wpcs_link" rel="nofollow" href="' . esc_url($wpcs_langs_urls['zh-tw']) . '" title="'.esc_html('台湾正体').'" >'.esc_html('台湾正体').'</a></span>' . "\n";
     /*$output .= '	<span id="wpcs_more_links" class="wpcs_lang" >
       <span id="wpcs_more_links_inner_more" class="'. ( ( $wpcs_target_lang == false || $wpcs_target_lang == 'zh-cn' || $wpcs_target_lang == 'zh-tw' ) ? 'wpcs_lang' : 'wpcs_current_lang' ) . '"><a class="wpcs_link" href="#" onclick="return false;" >其它中文</a></span>
           <span id="wpcs_more_links_inner" >
@@ -1507,6 +1535,36 @@ function wpcs_do_conversion() {
     add_filter('comment_text_rss', 'zhconversion');
 }
 
+function my_plugin_enqueue_block_editor_assets() {
+    global $wpcs_options;
+    set_wpcs_langs_urls();
+    wp_register_script( 'wpcs-block-script', plugins_url( '/assets/js/gudengbao.js', __FILE__ ), array( 'wp-blocks', 'wp-element' ), time() . '' );
+    wp_enqueue_script( 'wpcs-block-script');
+    // naviArray
+    $html = wpcs_output_navi('', true);
+    $doc = new DOMDocument;
+     $doc->loadHTML('<?xml encoding="utf-8" ?>' . $html); 
+    $xpath = new DOMXPath($doc);
+    $spanNodes = $xpath->query("//span[@class='wpcs_lang'] | //span[@class='wpcs_current_lang']");
+
+    $aProps = [];
+
+    foreach ($spanNodes as $span) {
+        $a = $span->getElementsByTagName('a')->item(0);
+        parse_str(parse_url($a->getAttribute('href'), PHP_URL_QUERY), $variantArr);
+        $aProps[] = [
+            'id' => $span->getAttribute('id'),
+            'className' => $span->getAttribute('class'),
+            'variant' => $variantArr['variant'] ?? '',
+            'href' => $a->getAttribute('href'),
+            'title' => $a->getAttribute('title'),
+            'innerText' => $a->nodeValue
+        ];
+    }
+
+    wp_localize_script('wpcs-block-script', 'wpc_switcher_navi_data', array('wpcs_navi' => $aProps));
+}
+
 /**
  * 在html的body标签class属性里添加当前中文语言代码
  * thanks to chad luo.
@@ -1601,7 +1659,8 @@ function wpcs_activate() {
             'zh-sg'   => "sgtip",
             'zh-tw'   => "twtip",
             'zh-my'   => "mytip",
-            'zh-mo'   => "motip"
+            'zh-mo'   => "motip",
+            'zh-jp'   => "jptip"
         ) as $lang => $tip
     ) {
         if ( ! empty($current_options[$tip])) {

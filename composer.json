@@ -1,0 +1,16 @@
+{
+    "name": "root/wpchinese-switcher",
+    "autoload": {
+        "psr-4": {
+            "Root\\WpchineseSwitcher\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "tl"
+        }
+    ],
+    "require": {
+        "overtrue/php-opencc": "^1.0"
+    }
+}

@@ -187,7 +187,7 @@ class wpcs_Admin {
                        name="wpcso_variant_<?php echo $key; ?>"<?php echo in_array($key, $this->options['wpcs_used_langs']) ? ' checked="checked"' : ''; ?> />
                 <label for="wpcso_variant_<?php echo $key; ?>"><?php $str = $value[2] . ' (' . $key . ')';
                     echo str_replace(' ', '&nbsp;', str_pad($str, 14 + strlen($str) - mb_strlen($str))); ?></label>
-                <input type="text" style="width: 100px;" name="<?php echo $this->langs[$key][1]; ?>"
+                <input type="text" placeholder="请输入展示名称(默认值如左)" style="width: 200px;margin-bottom: 5px" name="<?php echo $this->langs[$key][1]; ?>"
                        value="<?php echo ! empty($this->options[$value[1]]) ? esc_html($this->options[$value[1]]) : ''; ?>"/><br/>
                   <?php } ?><!--wpcs_NC_END-->
                 <div id="wpcs_help_uls" style="display: none;">未选中的中文语言将不被使用,此项设置为全局设置.您应该选中至少一种中文语言,否则本插件全部功能都不会工作.
