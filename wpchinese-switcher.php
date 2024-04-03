@@ -53,6 +53,12 @@ require __DIR__ . '/vendor/autoload.php';
 use Overtrue\PHPOpenCC\OpenCC;
 use Overtrue\PHPOpenCC\Strategy;
 
+add_action('wp_enqueue_scripts', 'wpcs_add_global_js');
+function wpcs_add_global_js () {
+    wp_register_script( 'wpcs-block-script-ok', plugins_url( '/assets/js/wpcs-block-script-ok.js', __FILE__ ), array( 'wp-blocks', 'wp-element' ), time() . '' );
+    wp_enqueue_script( 'wpcs-block-script-ok');
+}
+
 $wpcs_options = get_option('wpcs_options');
 // /**********************
 //初始化所有全局变量.其实不初始化也没关系,主要是防止某些古董php版本register_globals打开可能造成意想不到问题.
@@ -1003,13 +1009,29 @@ function wpcs_output_navi($args = '', $isReturn = false) {
         $default_url = $wpcs_noconversion_url;
     }
 
+    $wpcs_translate_type = $wpcs_options['wpcs_translate_type'] ?? 0;
 
     $output = "\n" . '<div id="wpcs_widget_inner"><!--wpcs_NC_START-->' . "\n";
-    $output .= '	<span id="wpcs_original_link" class="' . ($wpcs_target_lang == false ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" href="' . esc_url($default_url) . '" title="' . esc_html($noconverttip) . '">' . esc_html($noconverttip) . '</a></span>' . "\n";
+    if ($wpcs_translate_type == 0) {
+        $output .= '	<span id="wpcs_original_link" class="' . ($wpcs_target_lang == false ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" href="' . esc_url($default_url) . '" title="' . esc_html($noconverttip) . '">' . esc_html($noconverttip) . '</a></span>' . "\n";
+    
+        foreach ($wpcs_langs_urls as $key => $value) {
+            $tip    = ! empty($wpcs_options[$wpcs_langs[$key][1]]) ? esc_html($wpcs_options[$wpcs_langs[$key][1]]) : $wpcs_langs[$key][2];
+            $output .= '	<span id="wpcs_' . $key . '_link" class="' . ($wpcs_target_lang == $key ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($value) . '" title="' . esc_html($tip) . '" >' . esc_html($tip) . '</a></span>' . "\n";
+        }
+    } else if ($wpcs_translate_type == 1) {
+        $checkSelected = function ($selected_lang) use ($wpcs_target_lang) {
+            return $selected_lang == $wpcs_target_lang ? "selected":"";
+        };
+        $output .= sprintf('<select id="wpcs_translate_type" value="%s" onchange="wpcsRedirectToPage()">', $wpcs_translate_type);
+        $output .= sprintf('<option id="wpcs_original_link" value="" %s>%s</option>', $checkSelected(''),esc_html($noconverttip));
+        foreach ($wpcs_langs_urls as $key => $value) {
+            $tip    = ! empty($wpcs_options[$wpcs_langs[$key][1]]) ? esc_html($wpcs_options[$wpcs_langs[$key][1]]) : $wpcs_langs[$key][2];
+            $output .= sprintf('<option id="wpcs_%s_link" class="%s" value="%s" %s>%s</option>', $key,($currentLang == $key ? 'wpcs_current_lang' : 'wpcs_lang'), $key, $checkSelected($key),esc_html($tip));
+        }
+        
+        $output .= sprintf('</select>');
 
-    foreach ($wpcs_langs_urls as $key => $value) {
-        $tip    = ! empty($wpcs_options[$wpcs_langs[$key][1]]) ? esc_html($wpcs_options[$wpcs_langs[$key][1]]) : $wpcs_langs[$key][2];
-        $output .= '	<span id="wpcs_' . $key . '_link" class="' . ($wpcs_target_lang == $key ? 'wpcs_current_lang' : 'wpcs_lang') . '" ><a class="wpcs_link" rel="nofollow" href="' . esc_url($value) . '" title="' . esc_html($tip) . '" >' . esc_html($tip) . '</a></span>' . "\n";
     }
     $output .= '<!--wpcs_NC_END--></div>' . "\n";
     if ( ! $echo || $isReturn) {
@@ -1543,26 +1565,32 @@ function my_plugin_enqueue_block_editor_assets() {
     // naviArray
     $html = wpcs_output_navi('', true);
     $doc = new DOMDocument;
-     $doc->loadHTML('<?xml encoding="utf-8" ?>' . $html); 
+    $doc->loadHTML('<?xml encoding="utf-8" ?>' . $html);
     $xpath = new DOMXPath($doc);
-    $spanNodes = $xpath->query("//span[@class='wpcs_lang'] | //span[@class='wpcs_current_lang']");
 
     $aProps = [];
+    $wpcs_translate_type = $wpcs_options['wpcs_translate_type'] ?? 0;
 
-    foreach ($spanNodes as $span) {
-        $a = $span->getElementsByTagName('a')->item(0);
-        parse_str(parse_url($a->getAttribute('href'), PHP_URL_QUERY), $variantArr);
-        $aProps[] = [
-            'id' => $span->getAttribute('id'),
-            'className' => $span->getAttribute('class'),
-            'variant' => $variantArr['variant'] ?? '',
-            'href' => $a->getAttribute('href'),
-            'title' => $a->getAttribute('title'),
-            'innerText' => $a->nodeValue
-        ];
+    if ($wpcs_translate_type == 0) {
+        $spanNodes = $xpath->query("//span[@class='wpcs_lang'] | //span[@class='wpcs_current_lang']");
+        foreach ($spanNodes as $span) {
+            $a = $span->getElementsByTagName('a')->item(0);
+            parse_str(parse_url($a->getAttribute('href'), PHP_URL_QUERY), $variantArr);
+            $aProps[] = [
+                'id' => $span->getAttribute('id'),
+                'className' => $span->getAttribute('class'),
+                'variant' => $variantArr['variant'] ?? '',
+                'href' => $a->getAttribute('href'),
+                'title' => $a->getAttribute('title'),
+                'innerText' => $a->nodeValue
+            ];
+        }
+    } else if ($wpcs_translate_type == 1){
+        $aProps[] = $html;
     }
+    
 
-    wp_localize_script('wpcs-block-script', 'wpc_switcher_navi_data', array('wpcs_navi' => $aProps));
+    wp_localize_script('wpcs-block-script', 'wpc_switcher_navi_data', array('wpcs_navi' => $aProps, 'type_arr' => $wpcs_translate_type));
 }
 
 /**

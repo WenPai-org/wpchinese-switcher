@@ -197,6 +197,21 @@ class wpcs_Admin {
             </tr>
 
             <tr>
+              <td valign="top" width="30%"><a style="cursor: pointer;" >展示形式:</a></td>
+              <td>
+                <?php $wpcs_translate_type = $this->options['wpcs_translate_type'] ?? 0 ?>
+                <select id="wpcs_translate_type" value="<?php echo  $wpcs_translate_type ?>" name="wpcs_translate_type" style="width: 250px;">
+                  <option value="0"<?php echo  $wpcs_translate_type == 0 ? ' selected="selected"' : ''; ?>>
+                    平铺
+                  </option>
+                  <option value="1"<?php echo  $wpcs_translate_type == 1 ? ' selected="selected"' : ''; ?>>
+                    下拉列表
+                  </option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
               <td scope="row" valign="top" width="30%"><a title="单击查看帮助" style="cursor: pointer;"
                                                           onclick="toggleVisibility('wpcs_help_sc');">中文搜索关键词简繁转换: </a>
               </td>
@@ -499,6 +514,7 @@ class wpcs_Admin {
             'wpcs_used_langs'              => $langs,
             'wpcs_search_conversion'       => intval($_POST['wpcso_search_conversion']),
             'wpcs_browser_redirect'        => intval($_POST['wpcso_browser_redirect']),
+            'wpcs_translate_type'          => (isset($_POST['wpcs_translate_type']) ? intval($_POST['wpcs_translate_type']) : 0), // 0列表展示，1下拉展示
             'wpcs_use_cookie_variant'      => intval($_POST['wpcso_use_cookie_variant']),
             'wpcs_use_fullpage_conversion' => (isset($_POST['wpcso_use_fullpage_conversion']) ? 1 : 0),
             'wpcs_trackback_plugin_author' => (isset($_POST['wpcso_trackback_plugin_author']) ? intval($_POST['wpcso_trackback_plugin_author']) : 0),
