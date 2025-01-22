@@ -19,4 +19,4 @@
 
 ---
 
-**Copyright © 2025 · WPDate.com , All Rights Reserved. 文派 （广州） 科技有限公司；**
+**Copyright © 2025 · WPCC.net , All Rights Reserved. 文派 （广州） 科技有限公司；**
