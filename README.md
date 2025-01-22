@@ -1,9 +1,10 @@
-#关于 WP Chinese Converter
+# 关于 WP Chinese Converter
+
 文派简繁切换器（WP Chinese Converter），简称 WPCC，是完全基于您 WordPress 网站服务器端的中文繁简转换解决方案。
 
 ![avatar](https://img.feibisi.com/2021/03/wpchinese-switcher-banner-1544x500-1.png)
 
-#关于简繁转换
+# 关于简繁转换
 
 原始参考词库来自于 OpenCC 项目，目前我们正在构建更多地域词义词源项目—— OpenCC.org ，并首要为 WPCC 提供支持，可以实现更好的原生中文简繁阅读体验。
 
